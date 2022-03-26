@@ -1,45 +1,70 @@
-Working in a command line environment is recommended for ease of use with git and dvc. If on Windows, WSL1 or 2 is recommended.
+# ML pipeline to expose API on Heroku
 
-# Environment Set up
-* Download and install conda if you don’t have it already.
-    * Use the supplied requirements file to create a new environment, or
-    * conda create -n [envname] "python=3.8" scikit-learn dvc pandas numpy pytest jupyter jupyterlab fastapi uvicorn -c conda-forge
-    * Install git either through conda (“conda install git”) or through your CLI, e.g. sudo apt-get git.
+Udacity project about creating a pipeline to train a model and publish it with a public API on Heroku.
 
-## Repositories
-* Create a directory for the project and initialize git and dvc.
-    * As you work on the code, continually commit changes. Generated models you want to keep must be committed to dvc.
-* Connect your local git repo to GitHub.
-* Setup GitHub Actions on your repo. You can use one of the pre-made GitHub Actions if at a minimum it runs pytest and flake8 on push and requires both to pass without error.
-    * Make sure you set up the GitHub Action to have the same version of Python as you used in development.
-* Set up a remote repository for dvc.
+## Developer environment
 
-# Data
-* Download census.csv and commit it to dvc.
-* This data is messy, try to open it in pandas and see what you get.
-* To clean it, use your favorite text editor to remove all spaces.
-* Commit this modified data to dvc (we often want to keep the raw data untouched but then can keep updating the cooked version).
+### Githooks
 
-# Model
-* Using the starter code, write a machine learning model that trains on the clean data and saves the model. Complete any function that has been started.
-* Write unit tests for at least 3 functions in the model code.
-* Write a function that outputs the performance of the model on slices of the data.
-    * Suggestion: for simplicity, the function can just output the performance on slices of just the categorical features.
-* Write a model card using the provided template.
+Flake8 githooks needs to be installed on local development environment with following steps:
 
-# API Creation
-*  Create a RESTful API using FastAPI this must implement:
-    * GET on the root giving a welcome message.
-    * POST that does model inference.
-    * Type hinting must be used.
-    * Use a Pydantic model to ingest the body from POST. This model should contain an example.
-   	 * Hint: the data has names with hyphens and Python does not allow those as variable names. Do not modify the column names in the csv and instead use the functionality of FastAPI/Pydantic/etc to deal with this.
-* Write 3 unit tests to test the API (one for the GET and two for POST, one that tests each prediction).
+* Install precommit binary following https://pre-commit.com/#installation
+* Execute `pre-commit install`
 
-# API Deployment
-* Create a free Heroku account (for the next steps you can either use the web GUI or download the Heroku CLI).
-* Create a new app and have it deployed from your GitHub repository.
-    * Enable automatic deployments that only deploy if your continuous integration passes.
-    * Hint: think about how paths will differ in your local environment vs. on Heroku.
-    * Hint: development in Python is fast! But how fast you can iterate slows down if you rely on your CI/CD to fail before fixing an issue. I like to run flake8 locally before I commit changes.
-* Write a script that uses the requests module to do one POST on your live API.
+## Code/Model testing
+
+Test suite can be executed by `pytest`
+
+## EDA notebook
+
+An EDA notebook is available in [notebooks](../../nd0821-c3-starter-code/notebooks) folder; same procedures where applied on basic cleaning procedure.
+
+## Procedures
+
+### Basic cleaning procedure
+
+Cleaning data can be done by `python main.py --action basic_cleaning`
+
+### Train/test model procedure
+
+Model training and test ca be dione by `python main.py --action train_test_model`
+
+### Check model score procedure
+
+Check score on latest dvs saved model can be done by `python main.py --action check_score`
+
+### Run entire pipeline
+
+To run the entire pipeline in sequence, use `python main.py --action all` or `python main.py`
+
+### Serve the API on local
+
+If testing FastAPi serving on local is needed, execute `uvicorn api_server:app --reload`
+
+### Check Heroku deployed API
+
+Check Heroku deployed APi using `python check_heroku_api.py`
+
+## CI/CD
+
+Every step is automated so on Pull Request [Test pipeline](.github/workflows/test.yaml) is triggered.
+Pipeline pulls data from DVC and execute Flake8 + pytest doing every test.
+
+On Merge [Deploy pipeline](.github/workflows/deploy.yaml) is executed.
+Model is trained, score is checked, data.dvc is then autocommitted and Heroku will be able to automatically build the app.
+
+## Various media
+
+Requested files by rubric.
+
+* [Model Card](../../nd0821-c3-starter-code/docs/model_card.md)
+
+* [dvcdag.png](screenshots/dvcdag.png)
+
+* [example.png](screenshots/example.png)
+
+* [live_get.png](screenshots/live_get.png)
+
+* [live_post.png](screenshots/live_post.png)
+
+* [slice_output.txt](../../nd0821-c3-starter-code/files/slice_output.txt)
