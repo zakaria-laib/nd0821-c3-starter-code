@@ -1,0 +1,4 @@
+[core]
+    remote = mlopszak
+['remote "mlopszak"']
+    url = s3://mlopszak/artifatc
