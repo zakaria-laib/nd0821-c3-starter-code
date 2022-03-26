@@ -2,8 +2,7 @@ name: Test pipeline
 
 on:
   push:
-    branches:
-      - main
+    branches: [ master ]
 
 jobs:
   test:
