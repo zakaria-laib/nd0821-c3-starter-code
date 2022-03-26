@@ -11,8 +11,7 @@ from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
 from sklearn.ensemble import RandomForestClassifier
 
 from starter.ml.data import process_data
-from starter.ml.model import compute_slice_metrics, \
-    inference, train_model
+from starter.ml.model import inference, train_model
 
 CWD = os.getcwd()
 
@@ -63,6 +62,7 @@ def df():
     import pandas as pd
 
     dataframe = pd.read_csv(DATA_PATH)
+    dataframe.columns = dataframe.columns.str.replace(' ', '')
     return dataframe
 
 def test_process_data(encoder, binarizer, df, categorical):
@@ -108,18 +108,3 @@ def test_binarizer_artifact(binarizer):
 
 def test_encoder_artifact(encoder):
     assert isinstance(encoder, OneHotEncoder)
-
-def test_compute_slice_metrics(df, random_forest, encoder, binarizer):
-    SLICES = ['education', 'race', 'sex']
-    for elem in SLICES:
-        predictions = compute_slice_metrics(df, elem, random_forest,
-                        encoder, binarizer)
-        for feature, metrics in predictions.items():
-            assert isinstance(feature, str)
-            assert isinstance(
-                metrics['precision'],
-                float) and isinstance(
-                metrics['recall'],
-                float) and isinstance(
-                metrics['fbeta'],
-                float)
