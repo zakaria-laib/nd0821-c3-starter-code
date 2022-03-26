@@ -1,8 +1,19 @@
+"""
+Training and Scoring Module
+
+Author : Moh. Rosidi
+Date   : August 2021
+"""
+import os
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import fbeta_score, precision_score, recall_score
+from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
 
+from .data import process_data
 
-# Optional: implement hyperparameter tuning.
-def train_model(X_train, y_train):
+def train_model(X_train, y_train, model_params):
     """
     Trains a machine learning model and returns it.
 
@@ -12,13 +23,17 @@ def train_model(X_train, y_train):
         Training data.
     y_train : np.array
         Labels.
+    model_params: dict
+        Model hyperparameters
     Returns
     -------
     model
         Trained machine learning model.
     """
 
-    pass
+    model = RandomForestClassifier(**model_params)
+    model.fit(X_train, y_train)
+    return model
 
 
 def compute_model_metrics(y, preds):
@@ -43,12 +58,12 @@ def compute_model_metrics(y, preds):
     return precision, recall, fbeta
 
 
-def inference(model, X):
+def inference(model: RandomForestClassifier, X: np.array):
     """ Run model inferences and return the predictions.
 
     Inputs
     ------
-    model : ???
+    model : RandomForestClassifier
         Trained machine learning model.
     X : np.array
         Data used for prediction.
@@ -57,4 +72,5 @@ def inference(model, X):
     preds : np.array
         Predictions from the model.
     """
-    pass
+    preds = model.predict(X)
+    return preds
