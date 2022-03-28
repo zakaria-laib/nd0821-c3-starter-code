@@ -5,16 +5,17 @@ import pandas as pd
 import os
 from src.ml.data import process_data, clean_dataset
 from src.ml.model import inference
+
 cat_features = [
-        "workclass",
-        "education",
-        "marital-status",
-        "occupation",
-        "relationship",
-        "race",
-        "sex",
-        "native-country",
-    ]
+    "workclass",
+    "education",
+    "marital-status",
+    "occupation",
+    "relationship",
+    "race",
+    "sex",
+    "native-country",
+]
 if "DYNO" in os.environ and os.path.isdir(".dvc"):
     os.system("dvc config core.no_scm true")
     if os.system("dvc pull") != 0:
@@ -26,6 +27,7 @@ app = FastAPI()
 model = joblib.load("model/model.pkl")
 encoder = joblib.load("model/encoder.pkl")
 lb = joblib.load("model/lb.pkl")
+
 
 class Person(BaseModel):
     age: int = Field(..., example=39)

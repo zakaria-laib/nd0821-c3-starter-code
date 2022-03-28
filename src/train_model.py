@@ -14,7 +14,6 @@ from ml.model import compute_model_slice_metrics
 # Add code to load in the data.
 
 
-
 # Optional enhancement, use K-fold cross validation instead of a
 # train-test split.
 
@@ -37,21 +36,21 @@ if __name__ == '__main__':
 
     print("Data preprocessing step for train set")
     X_train, y_train, encoder, lb = process_data(
-    train,
-    categorical_features=cat_features,
-    label="salary",
-    training=True
+        train,
+        categorical_features=cat_features,
+        label="salary",
+        training=True
     )
 
     # Proces the test data with the process_data function.
     print("Data preprocessing step for test set")
     X_test, y_test, encoder, lb = process_data(
-    test,
-    categorical_features=cat_features,
-    label="salary",
-    training=False,
-    encoder=encoder,
-    lb=lb
+        test,
+        categorical_features=cat_features,
+        label="salary",
+        training=False,
+        encoder=encoder,
+        lb=lb
     )
 
     # Train and save a model.
@@ -81,4 +80,9 @@ if __name__ == '__main__':
     print("Compute model slice metrics")
     input_pth = "model"
     output_pth = "data"
-    compute_model_slice_metrics(test, cat_features, input_pth, output_pth, process_data)
+    compute_model_slice_metrics(
+        test,
+        cat_features,
+        input_pth,
+        output_pth,
+        process_data)

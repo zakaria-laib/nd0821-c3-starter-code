@@ -70,7 +70,11 @@ def test_compute_model_slice_metrics(make_dataset):
     _, _, df = make_dataset
     input_pth = "model"
     output_pth = "data"
-    compute_model_slice_metrics(df, ["column3"], input_pth, output_pth, process_data)
+    compute_model_slice_metrics(df,
+                                ["column3"],
+                                input_pth,
+                                output_pth,
+                                process_data)
     assert os.path.exists(output_pth + "/slice_output.txt")
     assert os.stat(output_pth + "/slice_output.txt").st_size > 0.0
 

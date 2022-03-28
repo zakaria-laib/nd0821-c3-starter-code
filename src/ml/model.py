@@ -49,7 +49,11 @@ def compute_model_metrics(y, preds):
     return precision, recall, fbeta
 
 
-def compute_model_slice_metrics(df, cat_features, input_pth, output_pth, process_data):
+def compute_model_slice_metrics(df,
+                                cat_features,
+                                input_pth,
+                                output_pth,
+                                process_data):
     """
     Validates the trained machine learning mogdel
     with slice metrics and write in text file.
