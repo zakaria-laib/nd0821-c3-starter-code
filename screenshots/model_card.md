@@ -20,6 +20,8 @@ determine whether a person makes over 50K a year.
   * recall: 0.5894977168949772
   * fbeta: 0.6456614153538386
 
+## Ethical Considerations
+*Certain features used could be deemed discriminatory (race, education level).
 
 ## Caveats and Recommendations
 * Use more data for training for better generalization.

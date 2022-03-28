@@ -26,5 +26,7 @@ jobs:
         uses: iterative/setup-dvc@v1
       - name: Pull data from DVC
         run: dvc pull
+      - name: Run Flake8
+          run: flake8
       - name: Run pytest
         run: pytest
